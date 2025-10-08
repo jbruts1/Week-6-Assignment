@@ -112,6 +112,37 @@ Main = (function() {
     }
                 
     initMap()
+    const cities = {
+        "Minneapolis":[-93.2650, 44.9778],
+         "Laramie": [-105.578, 41.3114],
+         "Casper": [-106.3131, 42.8501],
+         "Grand Canyon": [-112.1401, 36.0544]
+    
+    };
+
+    const searchInput = document.createElement("input");
+    searchInput.type ="text";
+    searchInput.paceholder ="Search city...";
+searchInput.style.position = "absolute";
+searchInput.style.top = "10px";
+searchInput.style.left = "10px";
+searchInput.style.padding = "6px";
+searchInput.style.zIndex = "10";
+searchInput.style.borderRadius = "6px";
+document.body.appendChild(searchInput);
+
+searchInput.addEventListener("change", function() {
+    const city = searchInput.value.trim();
+    if (cities[city]) {
+        const [x, y] = cities[city];
+        view.goTo({
+            target: { type: "point", x: x, y: y, z: 20000 },
+            zoom: 8
+        });
+    } else {
+        alert("City not found. Try one of: Minneapolis, Laramie, Casper, Grand Canyon, Denver");
+    }
+}); 
                 
     return {};
 
