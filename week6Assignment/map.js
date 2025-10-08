@@ -67,12 +67,14 @@ Main = (function() {
                                 
             const markerSymbol = {                            
                 type: "simple-marker",                             
-                color: [0, 0, 255],                            
+                color: [255, 102, 0, 0.8],  
+                size: 12,
+                style: "diamond",                          
                 outline: {
                               
                     // autocasts as new SimpleLineSymbol()                              
                     color: [255, 255, 255],                             
-                    width: 2
+                    width: 1.5
                             
                 }
                           
@@ -82,11 +84,27 @@ Main = (function() {
                 geometry: point,                            
                 symbol: markerSymbol,                            
                 popupTemplate: {                                
-                    title: key + ": " + value.city + ", " + value.state                            
+                     title: key,
+  content: `
+    <b>City:</b> ${value.city}<br>
+    <b>State:</b> ${value.state}<br>
+    <b>Coordinates:</b> ${value.coord.join(", ")}
+  `                            
                 }                  
             });
                           
             graphicsLayer.add(pointGraphic);
+            view.on("click", function(event) {
+    view.hitTest(event).then(function(response) {
+        const result = response.results[0];
+        if (result && result.graphic && result.graphic.geometry.type === "point") {
+            view.goTo({
+                target: result.graphic.geometry,
+                zoom: 8
+            });
+        }
+    });
+});
                     
                     
         }
